@@ -1,9 +1,6 @@
 package fr.miage.moureypierson.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.Set;
 
 /**
@@ -13,7 +10,7 @@ import java.util.Set;
 public abstract class Abonne {
 
     @Id
-    @GeneratedValue(generator = "increment")
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private long id;
 
     /**

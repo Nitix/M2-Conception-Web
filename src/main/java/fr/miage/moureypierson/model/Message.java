@@ -10,7 +10,7 @@ import java.util.Set;
 public class Message {
 
     @Id
-    @GeneratedValue(generator = "increment")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     private String objet;

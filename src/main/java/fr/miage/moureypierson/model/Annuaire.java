@@ -1,9 +1,6 @@
 package fr.miage.moureypierson.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.Set;
 
 /**
@@ -13,8 +10,8 @@ import java.util.Set;
 public class Annuaire {
 
     @Id
-    @GeneratedValue(generator = "increment")
-    private long id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    protected long id;
 
     private String nom;
 
