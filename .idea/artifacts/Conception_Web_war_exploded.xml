@@ -1,10 +1,10 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="Conception Web:war exploded">
+  <artifact type="exploded-war" name="conception-web:war exploded">
     <output-path>$PROJECT_DIR$/target/conception-web</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
-          <element id="module-output" name="Conception Web" />
+          <element id="module-output" name="conception-web" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: org.hibernate:hibernate-core:5.2.4.Final" />
@@ -29,7 +29,7 @@
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/target/conception-web/META-INF/MANIFEST.MF" />
       </element>
-      <element id="javaee-facet-resources" facet="Conception Web/web/Web" />
+      <element id="javaee-facet-resources" facet="conception-web/web/Web" />
     </root>
   </artifact>
 </component>

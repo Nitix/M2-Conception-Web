@@ -22,11 +22,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="Conception Web" />
+        <module name="conception-web" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Conception Web" target="1.8" />
+      <module name="conception-web" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -1,0 +1,1 @@
+INSERT INTO 'annuaire' ('nom') VALUES ('annuaire');
