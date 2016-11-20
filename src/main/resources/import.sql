@@ -1,1 +1,1 @@
-INSERT INTO 'annuaire' ('nom') VALUES ('annuaire');
+INSERT INTO ANNUAIRE ( ID, NOM ) VALUES (1, 'default');

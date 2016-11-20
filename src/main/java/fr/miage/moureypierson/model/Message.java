@@ -1,6 +1,7 @@
 package fr.miage.moureypierson.model;
 
 import javax.persistence.*;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -11,7 +12,7 @@ public class Message {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     private String objet;
 
@@ -21,7 +22,7 @@ public class Message {
     private Abonne expediteur;
 
     @OneToMany
-    private Set<Abonne> destinataires;
+    private Set<Abonne> destinataires = new LinkedHashSet<>();
 
     public long getId() {
         return id;
@@ -71,4 +72,6 @@ public class Message {
     public void addDestinataire(Abonne abonne){
         this.destinataires.add(abonne);
     }
+
+
 }

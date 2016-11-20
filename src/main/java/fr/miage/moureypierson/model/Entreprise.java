@@ -14,7 +14,8 @@ public class Entreprise extends Abonne {
         return raisonSociale;
     }
 
-    public void setRaisonSociale(String raisonSociale) {
+    public Entreprise setRaisonSociale(String raisonSociale) {
         this.raisonSociale = raisonSociale;
+        return this;
     }
 }

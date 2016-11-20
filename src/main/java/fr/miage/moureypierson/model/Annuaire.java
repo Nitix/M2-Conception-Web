@@ -1,6 +1,10 @@
 package fr.miage.moureypierson.model;
 
+import fr.miage.moureypierson.config.HibernateUtil;
+import org.hibernate.Session;
+
 import javax.persistence.*;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -11,12 +15,12 @@ public class Annuaire {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    protected long id;
+    protected Long id;
 
     private String nom;
 
     @ManyToMany
-    private Set<Abonne> abonnes;
+    private Set<Abonne> abonnes = new LinkedHashSet<>();
 
     public long getId() {
         return id;
@@ -47,5 +51,17 @@ public class Annuaire {
 
     public void addAbonne(Abonne abonne) {
         this.abonnes.add(abonne);
+    }
+
+    public static Annuaire findById(Long id) {
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            return (Annuaire) session.get(Annuaire.class, id);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 }

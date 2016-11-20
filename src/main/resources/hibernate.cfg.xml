@@ -6,22 +6,22 @@
 <hibernate-configuration>
 
     <!-- a SessionFactory instance listed as /jndi/name -->
-    <session-factory name="java:hibernate/SessionFactory">
+    <session-factory>
 
         <!-- properties -->
-        <property name="dialect">org.hibernate.dialect.H2Dialect</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.H2Dialect</property>
         <property name="connection.url">jdbc:h2:file:./target/database/annuaire</property>
         <property name="connection.username">sa</property>
         <property name="connection.password"></property>
         <property name="connection.driver_class">org.h2.Driver</property>
         <property name="show_sql">true</property>
-        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.hbm2ddl.auto">create</property>
 
         <!-- mapping files -->
         <mapping class="fr.miage.moureypierson.model.Annuaire"/>
-        <mapping class="fr.miage.moureypierson.model.Abonne"/>
         <mapping class="fr.miage.moureypierson.model.Entreprise"/>
         <mapping class="fr.miage.moureypierson.model.Message"/>
+        <mapping class="fr.miage.moureypierson.model.Abonne"/>
         <mapping class="fr.miage.moureypierson.model.Particulier"/>
 
     </session-factory>
