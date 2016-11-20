@@ -1,7 +1,10 @@
 <%@ page import="fr.miage.moureypierson.model.Annuaire" %>
 <%@ page import="java.util.Set" %>
 <%@ page import="fr.miage.moureypierson.model.Abonne" %>
+<%@ page import="fr.miage.moureypierson.model.Message" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -22,6 +25,19 @@
     <![endif]-->
 </head>
     <body>
+    <h1>Consultez vos messages.</h1>
+    <div class="container-fluid">
+            <ul class="menu clearfix">
+                <% ArrayList<Message>listeMessage = new ArrayList<>(); //Set<Message> listeMessage = Abonne.getMessages();
+                    for (Message m : listeMessage){%>
+                <li><a><%= m.getExpediteur()%> <%= m.getObjet()%></a></li>
+                <%
+                    }
+                %>
+            <ul/>
+        </div>
+    </div>
+    
     <h1>Choissiez un abonné à qui envoyer votre message.</h1>
     <div class="container-fluid">
         <div class="row">
