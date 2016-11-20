@@ -1,8 +1,14 @@
 package fr.miage.moureypierson.model;
 
+import fr.miage.moureypierson.config.HibernateUtil;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
+
 import javax.persistence.*;
 import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by nitix on 12/11/16.
@@ -21,8 +27,8 @@ public class Message {
     @ManyToOne
     private Abonne expediteur;
 
-    @OneToMany
-    private Set<Abonne> destinataires = new LinkedHashSet<>();
+    @ManyToMany
+    private List<Abonne> destinataires = new LinkedList<>();
 
     public long getId() {
         return id;
@@ -60,11 +66,11 @@ public class Message {
         return this;
     }
 
-    public Set<Abonne> getDestinataires() {
+    public List<Abonne> getDestinataires() {
         return destinataires;
     }
 
-    public Message setDestinataires(Set<Abonne> destinataires) {
+    public Message setDestinataires(List<Abonne> destinataires) {
         this.destinataires = destinataires;
         return this;
     }
@@ -73,5 +79,15 @@ public class Message {
         this.destinataires.add(abonne);
     }
 
-
+    public static Message findById(long id) {
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            return (Message) session.get(Message.class, id);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
 }

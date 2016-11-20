@@ -1,8 +1,8 @@
 <%@ page import="fr.miage.moureypierson.model.Annuaire" %>
-<%@ page import="java.util.Set" %>
 <%@ page import="fr.miage.moureypierson.model.Abonne" %>
 <%@ page import="fr.miage.moureypierson.model.Message" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <!DOCTYPE html>
@@ -28,9 +28,9 @@
     <h1>Consultez vos messages.</h1>
     <div class="container-fluid">
             <ul class="menu clearfix">
-                <% ArrayList<Message>listeMessage = new ArrayList<>(); //Set<Message> listeMessage = Abonne.getMessages();
+                <% List<Message>listeMessage = Abonne.findById((Long) request.getSession().getAttribute("login")).getMessages();
                     for (Message m : listeMessage){%>
-                <li><a><%= m.getExpediteur()%> <%= m.getObjet()%></a></li>
+                <li><a href="afficher-message.jsp?id=<%= m.getId()%>"><%= m.getExpediteur().getName()%> : <%= m.getObjet()%></a></li>
                 <%
                     }
                 %>
@@ -38,26 +38,29 @@
         </div>
     </div>
     
-    <h1>Choissiez un abonné à qui envoyer votre message.</h1>
+    <h1>Choissez une liste de diffusion à qui envoyer votre message.</h1>
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6">
-                <form method="post" action="index.jsp">
-                    <input type="hidden" name="type" value="inscription">
+                <form method="post" action="messages.jsp">
                     <div class="form-group">
                         <label for="destinataire">Destinataire</label>
                         <SELECT id="destinataire" name="destinataire" size="1">
-                            <% Set<Abonne> liste = Annuaire.getAbonnes();
-                                for (Abonne a : liste){%>
-                                <OPTION value="<%= a.getLogin()%>"><%= a.getLogin()%></OPTION>
+                            <% List<Annuaire> liste = Annuaire.findAll();
+                                for (Annuaire a : liste){%>
+                                <OPTION value="<%= a.getId()%>"><%= a.getNom()%></OPTION>
                             <%
                                 }
                             %>
                         </SELECT>
                     </div>
                     <div class="form-group">
+                        <label for="objet">Message</label>
+                        <input type="text" class="form-control" id="objet" name="objet" placeholder="Objet">
+                    </div>
+                    <div class="form-group">
                         <label for="message_content">Message</label>
-                        <textarea type="text" class="form-control" id="message_content" name="message_content" placeholder="Contenu de votre message"></textarea>
+                        <textarea class="form-control" id="message_content" name="message_content" placeholder="Contenu de votre message"></textarea>
                     </div>
 
                     <button type="submit" class="btn btn-default">Envoyer</button>

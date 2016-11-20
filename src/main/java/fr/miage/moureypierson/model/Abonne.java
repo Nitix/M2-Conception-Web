@@ -2,6 +2,7 @@ package fr.miage.moureypierson.model;
 
 import fr.miage.moureypierson.config.HibernateUtil;
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
@@ -9,7 +10,8 @@ import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import java.io.Serializable;
 import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by nitix on 12/11/16.
@@ -33,8 +35,11 @@ public abstract class Abonne implements Serializable {
     @Column(unique = true)
     private String login;
 
-    @ManyToMany
-    private Set<Annuaire> abonnements = new LinkedHashSet<>();
+    @ManyToMany(mappedBy = "abonnes")
+    private List<Annuaire> abonnements = new LinkedList<>();
+
+    @ManyToMany(mappedBy = "destinataires")
+    private List<Message> messages = new LinkedList<>();
 
     public Abonne() {
 
@@ -69,11 +74,12 @@ public abstract class Abonne implements Serializable {
         this.login = login;
     }
 
-    public Set<Annuaire> getAbonnements() {
+    @ManyToMany(mappedBy = "abonnes")
+    public List<Annuaire> getAbonnements() {
         return abonnements;
     }
 
-    public void setAbonnements(Set<Annuaire> abonnements) {
+    public void setAbonnements(List<Annuaire> abonnements) {
         this.abonnements = abonnements;
     }
 
@@ -81,16 +87,28 @@ public abstract class Abonne implements Serializable {
         this.abonnements.add(annuaire);
     }
 
-    public static Abonne findById(long id) {
+    public static Abonne findById(Long id) {
+        if(id == null)
+            return null;
         Session session = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
-            return (Abonne) session.get(Abonne.class, id);
+            Abonne abonne =  (Abonne) session.get(Abonne.class, id);
+            Hibernate.initialize(abonne.getMessages());
+            return abonne;
         } finally {
             if (session != null) {
                 session.close();
             }
         }
+    }
+
+    public List<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(List<Message> messages) {
+        this.messages = messages;
     }
 
     public static Abonne findByLogin(String login) {
@@ -106,4 +124,14 @@ public abstract class Abonne implements Serializable {
             }
         }
     }
+
+    public String getName() {
+        if(this instanceof Particulier) {
+            return ((Particulier )this).getNom() + " " + ((Particulier )this).getPrenom();
+        }else {
+            return ((Entreprise) this).getRaisonSociale();
+        }
+    }
+
+
 }

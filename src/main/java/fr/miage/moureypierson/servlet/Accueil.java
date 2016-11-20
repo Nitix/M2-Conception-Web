@@ -43,8 +43,8 @@ public class Accueil extends HttpServlet {
         Abonne abonne = Abonne.findByLogin(login);
         System.out.println(abonne);
         if(abonne != null && BCrypt.checkpw(password, abonne.getMdp())) {
-            request.getSession().setAttribute("login", abonne);
-            getServletContext().getRequestDispatcher("/WEB-INF/messages.jsp").forward(request, response);
+            request.getSession().setAttribute("login", abonne.getId());
+            response.sendRedirect("messages.jsp");
         } else {
             getServletContext().getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response);
         }
@@ -67,14 +67,16 @@ public class Accueil extends HttpServlet {
         }
         abonne.setLogin(login);
         abonne.setMdp(BCrypt.hashpw(password, BCrypt.gensalt()));
-        Annuaire annuaire = Annuaire.findById(1L);
-        abonne.addAbonnement(annuaire);
+
         Session session = null;
         Transaction tx = null;
         try{
             session = HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
+            Annuaire annuaire = Annuaire.findById(1L);
+            annuaire.addAbonne(abonne);
             session.persist(abonne);
+            session.update(annuaire);
             tx.commit();
         }catch (Exception e) {
             if(tx != null) tx.rollback();
@@ -86,6 +88,7 @@ public class Accueil extends HttpServlet {
                 session.close();
             }
         }
-        getServletContext().getRequestDispatcher("/WEB-INF/messages.jsp").forward(request, response);
+        request.getSession().setAttribute("login", abonne.getId());
+        response.sendRedirect("messages.jsp");
     }
 }

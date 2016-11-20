@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>fr.miage.moureypierson</groupId>
     <artifactId>conception-web</artifactId>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <version>1.0-SNAPSHOT</version>
     <name>conception-web Maven Webapp</name>
     <url>http://maven.apache.org</url>
@@ -118,6 +118,6 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <tomcat.version>8.5.8</tomcat.version>
+        <tomcat.version>8.5.2</tomcat.version>
     </properties>
 </project>

@@ -1,10 +1,15 @@
 package fr.miage.moureypierson.model;
 
 import fr.miage.moureypierson.config.HibernateUtil;
+import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -20,7 +25,8 @@ public class Annuaire {
     private String nom;
 
     @ManyToMany
-    private static Set<Abonne> abonnes = new LinkedHashSet<>();
+    private List<Abonne> abonnes;
+
 
     public long getId() {
         return id;
@@ -40,11 +46,11 @@ public class Annuaire {
         return this;
     }
 
-    public static Set<Abonne> getAbonnes() {
+    public List<Abonne> getAbonnes() {
         return abonnes;
     }
 
-    public Annuaire setAbonnes(Set<Abonne> abonnes) {
+    public Annuaire setAbonnes(List<Abonne> abonnes) {
         this.abonnes = abonnes;
         return this;
     }
@@ -57,7 +63,22 @@ public class Annuaire {
         Session session = null;
         try {
             session = HibernateUtil.getSessionFactory().openSession();
-            return (Annuaire) session.get(Annuaire.class, id);
+            Annuaire annuaire = (Annuaire) session.get(Annuaire.class, id);
+            Hibernate.initialize(annuaire.getAbonnes());
+            return annuaire;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
+    public static List<Annuaire> findAll() {
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            Criteria criteria = session.createCriteria(Annuaire.class);
+            return (List<Annuaire>) criteria.list();
         } finally {
             if (session != null) {
                 session.close();
