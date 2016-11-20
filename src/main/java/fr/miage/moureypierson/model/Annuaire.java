@@ -20,7 +20,7 @@ public class Annuaire {
     private String nom;
 
     @ManyToMany
-    private Set<Abonne> abonnes = new LinkedHashSet<>();
+    private static Set<Abonne> abonnes = new LinkedHashSet<>();
 
     public long getId() {
         return id;
@@ -40,7 +40,7 @@ public class Annuaire {
         return this;
     }
 
-    public Set<Abonne> getAbonnes() {
+    public static Set<Abonne> getAbonnes() {
         return abonnes;
     }
 
