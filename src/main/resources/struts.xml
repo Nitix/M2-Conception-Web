@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+
+<struts>
+    <constant name="struts.action.extension" value="" />
+
+    <package namespace="/" extends="struts-default" name="default">
+        <default-action-ref name="identification" />
+
+        <action name="afficherMessage" class="fr.miage.moureypierson.actions.AfficherMessage">
+            <result name="success">/afficher-message.jsp</result>
+            <result name="login" type="redirectAction">identification</result>
+        </action>
+
+        <action name="desinscrire" class="fr.miage.moureypierson.actions.Desinscrire">
+            <result name="success" type="redirectAction">identification</result>
+            <result name="login" type="redirectAction">identification</result>
+        </action>
+
+        <action name="envoyerMessage" class="fr.miage.moureypierson.actions.EnvoyerMessage">
+            <result name="success">/envoyer-message.jsp</result>
+            <result name="input">/envoyer-message.jsp</result>
+            <result name="login" type="redirectAction">identification</result>
+        </action>
+
+        <action name="accueil" class="fr.miage.moureypierson.actions.Accueil">
+            <result name="success">/messages.jsp</result>
+            <result name="login" type="redirectAction">identification</result>
+        </action>
+
+        <action name="identification" class="fr.miage.moureypierson.actions.Identification">
+            <result name="success" type="redirectAction">accueil</result>
+            <result name="error">/index.jsp</result>
+            <result name="input">/index.jsp</result>
+        </action>
+
+        <action name="inscription" class="fr.miage.moureypierson.actions.Inscription">
+            <result name="success" type="redirectAction">accueil</result>
+            <result name="error">/index.jsp</result>
+            <result name="input">/index.jsp</result>
+        </action>
+
+        <action name="ajouterAnnuaire" class="fr.miage.moureypierson.actions.AjouterAnnuaire">
+            <result name="success">/ajouterAnnuaire.jsp</result>
+            <result name="error">/ajouterAnnuaire.jsp</result>
+            <result name="input">/ajouterAnnuaire.jsp</result>
+            <result name="login" type="redirectAction">identification</result>
+
+        </action>
+        <action name="suppriermAnnuaire" class="fr.miage.moureypierson.actions.SupprimerAnnuaire">
+            <result name="success">/supprimerAnnuaire.jsp</result>
+            <result name="error">/supprimerAnnuaire.jsp</result>
+            <result name="input">/supprimerAnnuaire.jsp</result>
+            <result name="login" type="redirectAction">identification</result>
+        </action>
+    </package>
+</struts>

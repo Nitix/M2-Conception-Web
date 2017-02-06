@@ -4,13 +4,12 @@ import fr.miage.moureypierson.config.HibernateUtil;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.criterion.Restrictions;
 
 import javax.persistence.*;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by nitix on 12/11/16.
@@ -24,7 +23,7 @@ public class Annuaire {
 
     private String nom;
 
-    @ManyToMany
+    @OneToMany(mappedBy = "abonnement")
     private List<Abonne> abonnes;
 
 
@@ -84,5 +83,18 @@ public class Annuaire {
                 session.close();
             }
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Annuaire annuaire = (Annuaire) o;
+        return Objects.equals(id, annuaire.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

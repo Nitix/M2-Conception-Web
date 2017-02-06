@@ -23,9 +23,10 @@
     <![endif]-->
 </head>
 <body>
-<h1>Consultez vos messages.</h1>
-<div class="container-fluid">
-    <a href="messages.jsp"><button class="btn btn-info">Retour</button></a><br>
+<div class="container">
+    <h1>Consultez vos messages.</h1>
+    <a href="accueil"><button class="btn btn-info">Retour</button></a><br>
+    <br>
     Expéditeur : <%= m.getExpediteur().getName() %><br>
     Objet : <%= m.getObjet() %><br>
     Corps : <br>

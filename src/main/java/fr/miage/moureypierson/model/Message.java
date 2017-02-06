@@ -3,12 +3,15 @@ package fr.miage.moureypierson.model;
 import fr.miage.moureypierson.config.HibernateUtil;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.criterion.Restrictions;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by nitix on 12/11/16.
@@ -22,6 +25,7 @@ public class Message {
 
     private String objet;
 
+    @Column(columnDefinition="Text")
     private String corps;
 
     @ManyToOne
@@ -89,5 +93,18 @@ public class Message {
                 session.close();
             }
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Message message = (Message) o;
+        return Objects.equals(id, message.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

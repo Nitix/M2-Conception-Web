@@ -7,11 +7,11 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.Entity;
 import java.io.Serializable;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by nitix on 12/11/16.
@@ -35,10 +35,12 @@ public abstract class Abonne implements Serializable {
     @Column(unique = true)
     private String login;
 
-    @ManyToMany(mappedBy = "abonnes")
-    private List<Annuaire> abonnements = new LinkedList<>();
+    private Boolean administrator = false;
 
-    @ManyToMany(mappedBy = "destinataires")
+    @ManyToOne
+    private Annuaire abonnement;
+
+    @ManyToMany(mappedBy = "destinataires", cascade = CascadeType.ALL)
     private List<Message> messages = new LinkedList<>();
 
     public Abonne() {
@@ -48,6 +50,36 @@ public abstract class Abonne implements Serializable {
     public Abonne(String mdp, String login) {
         this.mdp = mdp;
         this.login = login;
+    }
+
+    public static Abonne findById(Long id) {
+        if (id == null)
+            return null;
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            Abonne abonne = (Abonne) session.get(Abonne.class, id);
+            Hibernate.initialize(abonne.getMessages());
+            return abonne;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
+    public static Abonne findByLogin(String login) {
+        Session session = null;
+        try {
+            session = HibernateUtil.getSessionFactory().openSession();
+            Criteria criteria = session.createCriteria(Abonne.class);
+            criteria.add(Restrictions.eq("login", login));
+            return (Abonne) criteria.uniqueResult();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
     }
 
     public Long getId() {
@@ -74,33 +106,12 @@ public abstract class Abonne implements Serializable {
         this.login = login;
     }
 
-    @ManyToMany(mappedBy = "abonnes")
-    public List<Annuaire> getAbonnements() {
-        return abonnements;
+    public Annuaire getAbonnement() {
+        return abonnement;
     }
 
-    public void setAbonnements(List<Annuaire> abonnements) {
-        this.abonnements = abonnements;
-    }
-
-    public void addAbonnement(Annuaire annuaire) {
-        this.abonnements.add(annuaire);
-    }
-
-    public static Abonne findById(Long id) {
-        if(id == null)
-            return null;
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            Abonne abonne =  (Abonne) session.get(Abonne.class, id);
-            Hibernate.initialize(abonne.getMessages());
-            return abonne;
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
+    public void setAbonnements(Annuaire abonnement) {
+        this.abonnement = abonnement;
     }
 
     public List<Message> getMessages() {
@@ -111,27 +122,33 @@ public abstract class Abonne implements Serializable {
         this.messages = messages;
     }
 
-    public static Abonne findByLogin(String login) {
-        Session session = null;
-        try {
-            session = HibernateUtil.getSessionFactory().openSession();
-            Criteria criteria = session.createCriteria(Abonne.class);
-            criteria.add(Restrictions.eq("login", login));
-            return (Abonne) criteria.uniqueResult();
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
-    }
-
     public String getName() {
-        if(this instanceof Particulier) {
-            return ((Particulier )this).getNom() + " " + ((Particulier )this).getPrenom();
-        }else {
+        if (this instanceof Particulier) {
+            return ((Particulier) this).getNom() + " " + ((Particulier) this).getPrenom();
+        } else {
             return ((Entreprise) this).getRaisonSociale();
         }
     }
 
 
+    public Boolean getAdministrator() {
+        return administrator;
+    }
+
+    public void setAdministrator(Boolean administrator) {
+        this.administrator = administrator;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Abonne abonne = (Abonne) o;
+        return Objects.equals(id, abonne.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
