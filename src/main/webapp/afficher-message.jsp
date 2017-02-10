@@ -36,7 +36,9 @@
     <br>
     <label>Expéditeur : </label> <%= m.getExpediteur().getName() %><br>
     <label>Objet : </label> <%= m.getObjet() %><br>
-    <label>Pièce jointe : </label> <a href="uploads/files/<%= m.getFile() %>"><%= m.getFile().split("/")[1]%></a><br>
+    <% if(m.getFile() != null && !m.getFile().isEmpty()) { %>
+        <label>Pièce jointe : </label> <a href="uploads/files/<%= m.getFile() %>"><%= m.getFile().split("/")[1]%></a><br>
+   <% } %>
     <label>Corps : </label><br>
     <%= m.getCorps() %>
 </div>
