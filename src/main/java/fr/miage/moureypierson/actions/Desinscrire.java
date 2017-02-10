@@ -35,21 +35,6 @@ public class Desinscrire extends ActionSupport implements SessionAware{
 
         Session session = null;
         Transaction tx = null;
-        /*
-        try{
-            session = HibernateUtil.getSessionFactory().openSession();
-            tx = session.beginTransaction();
-            tx.commit();
-        }catch (Exception e) {
-            if(tx != null) tx.rollback();
-            e.printStackTrace();
-            return ERROR;
-        }finally {
-            if (session != null) {
-                session.close();
-            }
-        }
-        */
         try{
             session = HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
@@ -67,7 +52,7 @@ public class Desinscrire extends ActionSupport implements SessionAware{
 
 
         this.session.clear();
-        addActionMessage("Vous êtes bien déinscrit");
+        addActionMessage("Vous êtes bien désinscrit");
         return SUCCESS;
     }
 

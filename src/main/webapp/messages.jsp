@@ -41,6 +41,7 @@
             <a href="desinscrire"><button class="btn btn-danger">Se désinscrire</button></a>
         </s:else>
         <a href="voirAbonne"><button class="btn btn-info">Voir les abonnées</button></a>
+        <a href="deconnexion"><button class="btn btn-info">Se déconnecter</button></a>
 
         <h1>Consultez vos messages.</h1>
         <ul class="menu clearfix">

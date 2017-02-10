@@ -33,10 +33,11 @@
         <s:fielderror theme="bootstrap"/>
         <div class="col-md-12">
             <a href="accueil">< Retour</a>
-            <s:form action="envoyerMessage" theme="bootstrap" cssClass="form-horizontal" label="Envoyer un message"
+            <s:form enctype="multipart/form-data" action="envoyerMessage" theme="bootstrap" cssClass="form-horizontal" label="Envoyer un message"
                     method="POST">
                 <s:textfield name="objet" label="Objet du message"/>
                 <s:textarea name="contenu" label="Contenu du message"/>
+                <s:file name="fichier" label="Pièce jointe"/>
                 <s:submit value="Envoyer un message" cssClass="btn btn-primary"/>
             </s:form>
         </div>

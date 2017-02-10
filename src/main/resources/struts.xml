@@ -6,6 +6,7 @@
 
 <struts>
     <constant name="struts.action.extension" value="" />
+    <constant name="struts.action.excludePattern" value="/uploads/.*?" />
 
     <package namespace="/" extends="struts-default" name="default">
         <default-action-ref name="identification" />
@@ -21,6 +22,7 @@
         </action>
 
         <action name="envoyerMessage" class="fr.miage.moureypierson.actions.EnvoyerMessage">
+            <param name="filesPath">uploads/files/</param>
             <result name="success">/envoyer-message.jsp</result>
             <result name="input">/envoyer-message.jsp</result>
             <result name="login" type="redirectAction">identification</result>
@@ -50,11 +52,20 @@
             <result name="login" type="redirectAction">identification</result>
 
         </action>
-        <action name="suppriermAnnuaire" class="fr.miage.moureypierson.actions.SupprimerAnnuaire">
+        <action name="supprimerAnnuaire" class="fr.miage.moureypierson.actions.SupprimerAnnuaire">
             <result name="success">/supprimerAnnuaire.jsp</result>
             <result name="error">/supprimerAnnuaire.jsp</result>
             <result name="input">/supprimerAnnuaire.jsp</result>
             <result name="login" type="redirectAction">identification</result>
+        </action>
+
+        <action name="deconnexion" class="fr.miage.moureypierson.actions.Deconnexion">
+            <result name="success" type="redirectAction">identification</result>
+        </action>
+
+        <action name="voirAbonne" class="fr.miage.moureypierson.actions.VoirAbonne">
+            <result name="login" type="redirectAction">identification</result>
+            <result name="success">/voirAbonne.jsp</result>
         </action>
     </package>
 </struts>

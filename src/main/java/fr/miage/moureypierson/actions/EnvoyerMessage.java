@@ -6,17 +6,21 @@ import fr.miage.moureypierson.model.Abonne;
 import fr.miage.moureypierson.model.Annuaire;
 import fr.miage.moureypierson.model.Message;
 import org.apache.struts2.interceptor.SessionAware;
+import org.apache.struts2.util.ServletContextAware;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import javax.servlet.ServletContext;
+import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by nitix on 05/02/17.
  */
-public class EnvoyerMessage extends ActionSupport implements SessionAware {
+public class EnvoyerMessage extends ActionSupport implements SessionAware, ServletContextAware {
 
     private List<Annuaire> annuaires;
 
@@ -25,6 +29,15 @@ public class EnvoyerMessage extends ActionSupport implements SessionAware {
     private String contenu;
 
     private boolean isFirst = false;
+
+
+    private File fichier;
+    private String fichierContentType;
+    private String fichierFileName;
+    private String filesPath;
+
+    private ServletContext context;
+
 
     @Override
     public void setSession(Map<String, Object> session) {
@@ -39,6 +52,8 @@ public class EnvoyerMessage extends ActionSupport implements SessionAware {
         annuaires = Annuaire.findAll();
         if(isFirst)
             return SUCCESS;
+        UUID uuid = UUID.randomUUID();
+
         Abonne abonne = Abonne.findById((Long) session.get("login"));
         Message message = new Message();
         message.setExpediteur(abonne);
@@ -46,6 +61,10 @@ public class EnvoyerMessage extends ActionSupport implements SessionAware {
         message.setDestinataires(dests);
         message.setCorps(contenu);
         message.setObjet(objet);
+        if(fichierFileName != null){
+            message.setFile(uuid.toString() + "/" + fichierFileName);
+            saveFile(getFichier(), fichierFileName, context.getRealPath("") + File.separator + filesPath + File.separator + uuid.toString() );
+        }
         Session session = null;
         Transaction tx = null;
 
@@ -63,6 +82,7 @@ public class EnvoyerMessage extends ActionSupport implements SessionAware {
                 session.close();
             }
         }
+
         addActionMessage("Message envoyé");
         return SUCCESS;
     }
@@ -101,5 +121,74 @@ public class EnvoyerMessage extends ActionSupport implements SessionAware {
         if (this.contenu.isEmpty()) {
             addFieldError("contenu", "Contenu vide");
         }
+    }
+
+    public void setFichier(File fichier) {
+        this.fichier = fichier;
+    }
+
+    public File getFichier() {
+        return fichier;
+    }
+
+    public String getFichierContentType() {
+        return fichierContentType;
+    }
+
+    public void setFichierContentType(String fichierContentType) {
+        this.fichierContentType = fichierContentType;
+    }
+
+    public String getFichierFileName() {
+        return fichierFileName;
+    }
+
+    public void setFichierFileName(String fichierFileName) {
+        this.fichierFileName = fichierFileName;
+    }
+
+    public static void saveFile(File file, String fileName, String filesDirectory) throws IOException{
+        FileInputStream in = null;
+        FileOutputStream out = null;
+
+        File dir = new File (filesDirectory);
+        if ( !dir.exists() )
+            dir.mkdirs();
+
+        String targetPath =  dir.getPath() + File.separator + fileName;
+        File destinationFile = new File ( targetPath);
+        try {
+            in = new FileInputStream( file );
+            out = new FileOutputStream( destinationFile );
+            int c;
+
+            while ((c = in.read()) != -1) {
+                out.write(c);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (in != null) {
+                in.close();
+            }
+            if (out != null) {
+                out.close();
+            }
+        }
+
+    }
+
+    public void setFilesPath(String filesPath) {
+        this.filesPath = filesPath;
+    }
+
+    public String getFilesPath() {
+        return filesPath;
+    }
+
+    @Override
+    public void setServletContext(ServletContext servletContext) {
+        this.context = servletContext;
     }
 }

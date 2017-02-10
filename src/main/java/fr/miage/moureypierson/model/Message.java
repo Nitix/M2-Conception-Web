@@ -34,6 +34,8 @@ public class Message {
     @ManyToMany
     private List<Abonne> destinataires = new LinkedList<>();
 
+    private String file;
+
     public long getId() {
         return id;
     }
@@ -106,5 +108,13 @@ public class Message {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public void setFile(String file) {
+        this.file = file;
+    }
+
+    public String getFile() {
+        return file;
     }
 }
